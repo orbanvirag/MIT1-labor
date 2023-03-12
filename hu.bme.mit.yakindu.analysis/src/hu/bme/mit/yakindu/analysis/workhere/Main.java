@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 import org.yakindu.sct.model.sgraph.State;
 import org.yakindu.sct.model.sgraph.Statechart;
+import org.yakindu.sct.model.sgraph.Transition;
 
 import hu.bme.mit.model2gml.Model2GML;
 import hu.bme.mit.yakindu.analysis.modelmanager.ModelManager;
@@ -29,7 +30,20 @@ public class Main {
 			EObject content = iterator.next();
 			if(content instanceof State) {
 				State state = (State) content;
+				int n = 1;
+				if(state.getName() == "") {
+					state.setName("State" + n);
+					n++;
+					System.out.println("Névtelen állapot új neve: " + state.getName());
+				}
 				System.out.println(state.getName());
+				if(state.getOutgoingTransitions().size() == 0) {
+					System.out.println("csapda állapot: " + state.getName());
+				}
+				for(Transition t: state.getOutgoingTransitions()) {
+					State out = (State) t.getTarget();
+					System.out.println(state.getName() + " -> " + out.getName());
+				}
 			}
 		}
 		
